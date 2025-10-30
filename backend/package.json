@@ -2,7 +2,11 @@
   "name": "local-and-famous-backend",
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
     "dev": "node --watch src/index.js",
+=======
+    "dev": "nodemon src/index.js",
+>>>>>>> ef3ca6a (Initial commit)
     "start": "node src/index.js"
   },
   "dependencies": {
@@ -14,6 +18,13 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
     "morgan": "^1.10.0",
+<<<<<<< HEAD
     "slugify": "^1.6.6"
   }
 }
+=======
+    "nodemon": "^3.1.10",
+    "slugify": "^1.6.6"
+  }
+}
+>>>>>>> ef3ca6a (Initial commit)

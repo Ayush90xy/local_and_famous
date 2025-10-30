@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 FROM node:20-alpine
 WORKDIR /app
 
@@ -12,3 +13,16 @@ COPY . .
 
 EXPOSE 4000
 CMD ["npm", "run", "dev"]
+=======
+# backend/Dockerfile
+FROM node:20-alpine
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 4000
+CMD ["npm", "run", "dev"]   # 👈 important: uses nodemon in dev
+>>>>>>> ef3ca6a (Initial commit)
