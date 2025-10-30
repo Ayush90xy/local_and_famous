@@ -9,10 +9,7 @@ import Favorites from './pages/Favorites';
 import Profile from './pages/Profile';
 import VendorDashboard from './pages/VendorDashboard';
 import AdminModeration from './pages/AdminModeration';
-<<<<<<< HEAD
-=======
 import About from './pages/About';
->>>>>>> ef3ca6a (Initial commit)
 
 export default function App() {
   return (
@@ -29,10 +26,7 @@ export default function App() {
           <Route path="/vendor" element={<VendorDashboard />} />
           <Route path="/admin" element={<AdminModeration />} />
           <Route path="*" element={<Navigate to='/' />} />
-<<<<<<< HEAD
-=======
           <Route path="/about" element={<About />} />
->>>>>>> ef3ca6a (Initial commit)
         </Routes>
       </div>
     </div>

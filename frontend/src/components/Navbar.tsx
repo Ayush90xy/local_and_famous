@@ -74,10 +74,6 @@ export default function Navbar() {
             </>
           )}
         </ul>
-<<<<<<< HEAD
-      </div>
-    </div>
-=======
       </nav>
 
       {/* Mobile menu */}
@@ -147,6 +143,5 @@ export default function Navbar() {
         </div>
       </div>
     </header>
->>>>>>> ef3ca6a (Initial commit)
   );
 }
