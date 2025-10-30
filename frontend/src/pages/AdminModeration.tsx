@@ -24,16 +24,6 @@ export default function AdminModeration() {
           {vendors.map(v=> <li key={v._id} className="flex items-center justify-between"><span>{v._id} · {v.phone}</span><button className="btn btn-sm btn-primary" onClick={()=>verifyVendor(v._id)}>Verify</button></li>)}
         </ul>
       </div>
-<<<<<<< HEAD
-
-      <div className="card bg-base-100 shadow p-6">
-        <h2 className="text-xl font-semibold mb-2">Pending Listings</h2>
-        <ul className="space-y-2">
-          {listings.map(l=> <li key={l._id} className="flex items-center justify-between"><span>{l.title}</span><button className="btn btn-sm btn-secondary" onClick={()=>publishListing(l._id)}>Publish</button></li>)}
-        </ul>
-      </div>
-=======
->>>>>>> ef3ca6a (Initial commit)
     </div>
   );
 }
