@@ -1,28 +1,10 @@
-<<<<<<< HEAD
 FROM node:20-alpine
 WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
+RUN npm ci
 
-# Install deps
-RUN npm install
-
-# Copy source
 COPY . .
 
 EXPOSE 4000
 CMD ["npm", "run", "dev"]
-=======
-# backend/Dockerfile
-FROM node:20-alpine
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
-COPY . .
-
-EXPOSE 4000
-CMD ["npm", "run", "dev"]   # 👈 important: uses nodemon in dev
->>>>>>> ef3ca6a (Initial commit)

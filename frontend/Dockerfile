@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-=======
-# frontend/Dockerfile
->>>>>>> ef3ca6a (Initial commit)
 FROM node:20-alpine
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 

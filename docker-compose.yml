@@ -1,64 +1,45 @@
-<<<<<<< HEAD
+version: "3.8"
 
-version: '3.8'
-=======
->>>>>>> ef3ca6a (Initial commit)
 services:
   mongo:
     image: mongo:7
-    restart: always
-<<<<<<< HEAD
-    ports: ["27017:27017"]
-=======
+    restart: unless-stopped
     ports:
       - "27017:27017"
->>>>>>> ef3ca6a (Initial commit)
     volumes:
       - mongo_data:/data/db
 
   backend:
-    build: ./backend
-<<<<<<< HEAD
-    environment:
-      - PORT=4000
-      - MONGO_URI=mongodb://mongo:27017/local_famous
-      - JWT_SECRET=dev_secret_change_me
-      - CORS_ORIGIN=http://localhost:5173
-    ports: ["4000:4000"]
-=======
-    command: npm run dev               # 👈 run nodemon for live reload
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: npm run dev               # nodemon hot-reload in dev
     volumes:
-      - ./backend:/app                 # 👈 mount your local backend code
-      - /app/node_modules              # 👈 keep container deps isolated
-    environment:
-      - PORT=4000
-      - MONGO_URI=mongodb+srv://ayush90xy:ra156SaNdpro5@cluster0.amvrhbd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      - JWT_SECRET=dev_secret_change_me
-      - CORS_ORIGIN=http://localhost:5173
+      - ./backend:/app                 # mount code
+      - /app/node_modules              # keep container deps isolated
+    env_file:
+      - ./backend/.env                 # put PORT, MONGO_URI, JWT_SECRET, CORS_ORIGIN here
     ports:
       - "4000:4000"
->>>>>>> ef3ca6a (Initial commit)
     depends_on:
       - mongo
+    restart: unless-stopped
 
   frontend:
-    build: ./frontend
-<<<<<<< HEAD
-    environment:
-      - VITE_API_BASE=http://localhost:4000
-    ports: ["5173:5173"]
-=======
-    command: npm run dev -- --host 0.0.0.0  # 👈 Vite dev server
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: npm run dev -- --host 0.0.0.0   # Vite dev server
     volumes:
       - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_API_BASE=http://localhost:4000
+      - VITE_API_BASE=http://localhost:4000  # frontend calls backend
     ports:
       - "5173:5173"
->>>>>>> ef3ca6a (Initial commit)
     depends_on:
       - backend
+    restart: unless-stopped
 
 volumes:
   mongo_data:
