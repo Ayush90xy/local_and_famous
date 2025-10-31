@@ -44,7 +44,7 @@ app.use((err, _req, res, _next) => {
 const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI;
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT,() => {
   console.log(`API listening on :${PORT}`);
   // Try connecting to Mongo after the server is up (so /health works even if Mongo is down)
   if (!MONGO_URI) {
