@@ -1,3 +1,4 @@
+// src/index.js
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -15,7 +16,7 @@ import adminRoutes from './routes/admin.js';
 
 const app = express();
 
-// CORS: allow comma-separated origins in CORS_ORIGIN (e.g., "https://frontend.code.run,http://localhost:5173")
+// Allow multiple origins via CORS_ORIGIN="https://front.code.run,http://localhost:5173"
 const allowed = process.env.CORS_ORIGIN?.split(',').map(s => s.trim()).filter(Boolean) || '*';
 app.use(cors({ origin: allowed }));
 
@@ -23,7 +24,9 @@ app.use(helmet());
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
 
-app.get('/health', (_req, res) => res.json({ ok: true }));
+app.get('/health', (_req, res) =>
+  res.json({ ok: true, mongo: mongoose.connection.readyState }) // 0=disconnected, 1=connected
+);
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
@@ -33,22 +36,27 @@ app.use('/reviews', reviewRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/admin', adminRoutes);
 
-// Error handler
 app.use((err, _req, res, _next) => {
   console.error(err);
   res.status(err.status || 500).json({ error: err.message || 'Server error' });
 });
 
 const PORT = process.env.PORT || 4000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/local_famous';
+const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(MONGO_URI, { autoIndex: false })
-  .then(() => {
-    console.log('Mongo connected');
-    // ⬇️ the missing comma is here!
-    app.listen(PORT, '0.0.0.0', () => console.log(`API listening on :${PORT}`));
-  })
-  .catch(err => {
-    console.error('Mongo connection error', err.message);
-    process.exit(1);
-  });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`API listening on :${PORT}`);
+  // Try connecting to Mongo after the server is up (so /health works even if Mongo is down)
+  if (!MONGO_URI) {
+    console.warn('MONGO_URI is not set — API is up but DB will be disconnected.');
+    return;
+  }
+  const connect = () =>
+    mongoose.connect(MONGO_URI, { autoIndex: false })
+      .then(() => console.log('Mongo connected'))
+      .catch(err => {
+        console.error('Mongo connection error:', err.message);
+        setTimeout(connect, 5000); // retry
+      });
+  connect();
+});
