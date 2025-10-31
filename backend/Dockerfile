@@ -1,17 +1,18 @@
 # backend/Dockerfile
 FROM node:20-alpine
+ENV NODE_ENV=production
 WORKDIR /app
 
-# Install only what's in lockfile for reproducibility
+# Only install prod deps
 COPY package*.json ./
 RUN npm ci --omit=dev
 
 # Copy source
 COPY . .
 
-# Env (Northflank will override with real values)
+# Northflank will set PORT; default to 4000 for local
 ENV PORT=4000
 EXPOSE 4000
 
-# Start the server
+# Start
 CMD ["node", "src/index.js"]
