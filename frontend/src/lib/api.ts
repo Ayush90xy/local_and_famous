@@ -1,13 +1,9 @@
+
 import axios from 'axios';
-
-// Always call relative API path — Nginx will proxy /api/* → backend
-const API = '/api';
-
+const API = import.meta.env.VITE_API_BASE || 'http://localhost:4000';
 export const api = axios.create({ baseURL: API });
-
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
-
